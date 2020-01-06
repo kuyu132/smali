@@ -82,6 +82,10 @@ public class DexBackedClassDef extends BaseTypeReference implements ClassDef {
             directMethodCount = 0;
             virtualMethodCount = 0;
         } else {
+            /**
+             * 读取dex文件的变量、方法等
+             * 参考：dex结构
+             */
             DexReader reader = dexFile.getDataBuffer().readerAt(classDataOffset);
             staticFieldCount = reader.readSmallUleb128();
             instanceFieldCount = reader.readSmallUleb128();

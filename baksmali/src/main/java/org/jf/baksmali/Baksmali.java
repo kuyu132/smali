@@ -50,7 +50,9 @@ public class Baksmali {
 
     public static boolean disassembleDexFile(DexFile dexFile, File outputDir, int jobs, final BaksmaliOptions options,
                                              @Nullable List<String> classes) {
-
+        /**
+         * 避免文件系统大小写问题
+         */
         //sort the classes, so that if we're on a case-insensitive file system and need to handle classes with file
         //name collisions, then we'll use the same name for each class, if the dex file goes through multiple
         //baksmali/smali cycles for some reason. If a class with a colliding name is added or removed, the filenames
