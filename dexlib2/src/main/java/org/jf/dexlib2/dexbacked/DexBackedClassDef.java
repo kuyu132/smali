@@ -83,8 +83,8 @@ public class DexBackedClassDef extends BaseTypeReference implements ClassDef {
             virtualMethodCount = 0;
         } else {
             /**
-             * 读取dex文件的变量、方法等
              * 参考：dex结构
+             * 如果不等于0，则要读取各种变量，方法的个数 保存到这个类的私有成员变量中，等到实际解析的时候再来使用
              */
             DexReader reader = dexFile.getDataBuffer().readerAt(classDataOffset);
             staticFieldCount = reader.readSmallUleb128();
@@ -491,7 +491,12 @@ public class DexBackedClassDef extends BaseTypeReference implements ClassDef {
         }
 
         //class_data_item
+        /**
+         * 作用同上面的DexBackedClassDex()构造器中的
+         * classDefOffset 是这个类结构体在dex文件中的偏移地址。
+         */
         int classDataOffset = dexFile.getBuffer().readSmallUint(classDefOffset + ClassDefItem.CLASS_DATA_OFFSET);
+        //读取各种变量、方法的格数
         if (classDataOffset > 0) {
             DexReader reader = dexFile.getDataBuffer().readerAt(classDataOffset);
             reader.readSmallUleb128(); //staticFieldCount

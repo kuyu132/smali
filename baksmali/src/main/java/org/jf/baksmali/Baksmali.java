@@ -43,6 +43,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
+/**
+ * FieldDefinition
+ * MethodDefinition
+ * ClassDefinition
+ *
+ */
 public class Baksmali {
     public static boolean disassembleDexFile(DexFile dexFile, File outputDir, int jobs, final BaksmaliOptions options) {
         return disassembleDexFile(dexFile, outputDir, jobs, options, null);
@@ -52,6 +58,7 @@ public class Baksmali {
                                              @Nullable List<String> classes) {
         /**
          * 避免文件系统大小写问题
+         * natural()：使用Comparable类型的自然顺序， 例如：整数从小到大，字符串是按字典顺序;
          */
         //sort the classes, so that if we're on a case-insensitive file system and need to handle classes with file
         //name collisions, then we'll use the same name for each class, if the dex file goes through multiple
@@ -102,6 +109,13 @@ public class Baksmali {
         return !errorOccurred;
     }
 
+    /**
+     * 反编译成smali文件，并生成对应的文件夹
+     * @param classDef
+     * @param fileNameHandler
+     * @param options
+     * @return
+     */
     private static boolean disassembleClass(ClassDef classDef, ClassFileNameHandler fileNameHandler,
                                             BaksmaliOptions options) {
         /**
@@ -122,6 +136,7 @@ public class Baksmali {
 
         File smaliFile = fileNameHandler.getUniqueFilenameForClass(classDescriptor);
 
+        //创建ClassDefinition
         //create and initialize the top level string template
         ClassDefinition classDefinition = new ClassDefinition(options, classDef);
 
@@ -151,6 +166,7 @@ public class Baksmali {
                     new FileOutputStream(smaliFile), "UTF8"));
 
             writer = new IndentingWriter(bufWriter);
+            //将类写入smali文件
             classDefinition.writeTo((IndentingWriter)writer);
         } catch (Exception ex) {
             System.err.println("\n\nError occurred while disassembling class " + classDescriptor.replace('/', '.') + " - skipping class");

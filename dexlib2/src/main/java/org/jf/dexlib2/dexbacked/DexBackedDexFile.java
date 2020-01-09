@@ -429,7 +429,7 @@ public class DexBackedDexFile implements DexFile {
                 throw new IndexOutOfBoundsException(
                         String.format("Invalid class index %d, not in [0, %d)", index, size()));
             }
-
+            //计算类在buffer中的位置
             return classStartOffset + index * ClassDefItem.ITEM_SIZE;
         }
     };
